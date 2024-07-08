@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -65,12 +66,12 @@ public class User implements UserDetails{
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private Date createdAt = new Date();
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    private Date updatedAt = new Date();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_id")

@@ -1,6 +1,8 @@
 server:
     port: 8080
-
+jwt:
+    secret: 984hg493gh0439rthr0429uruj2309yh937gc763fe87t3f89723gf
+    lifetime: 25m
 spring:
     datasource:
         # По умолчанию postgresql имеет 5432 порт. Но так как подразумевается запуск через docker-compose, указан порт

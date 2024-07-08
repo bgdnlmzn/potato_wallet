@@ -1,3 +1,9 @@
+CREATE TABLE wallets (
+                         id uuid PRIMARY KEY,
+                         amount BIGINT NOT NULL,
+                         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+
+);
 CREATE TABLE users (
                        id UUID PRIMARY KEY,
                        wallet_id UUID UNIQUE,
@@ -12,9 +18,4 @@ CREATE TABLE users (
                        updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
                        FOREIGN KEY (wallet_id) REFERENCES wallets (id)
 );
-CREATE TABLE wallets (
-                         id uuid PRIMARY KEY,
-                         amount BIGINT NOT NULL,
-                         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 
-);

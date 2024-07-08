@@ -3,6 +3,7 @@ package ru.cft.template.mapper;
 import org.springframework.stereotype.Component;
 import ru.cft.template.dto.UserCreateRequest;
 import ru.cft.template.dto.UserDto;
+import ru.cft.template.dto.UserShortInfo;
 import ru.cft.template.entity.User;
 
 @Component
@@ -18,6 +19,15 @@ public class UserMapper {
         user.setBirthDate(body.birthDate());
         return user;
     }
+    public static UserShortInfo mapUserShortInfoBody(User user) {
+        return new UserShortInfo(
+                user.getMobilePhone(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName()
+
+        );
+    }
 
     public static UserDto mapUserToResponse(User user) {
         return new UserDto(
@@ -28,6 +38,7 @@ public class UserMapper {
                 user.getMiddleName(),
                 user.getEmail(),
                 user.getMobilePhone(),
+                user.getBirthDate(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );

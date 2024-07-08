@@ -3,7 +3,9 @@ package ru.cft.template.dto;
 
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Builder
 public record UserDto(
@@ -14,7 +16,8 @@ public record UserDto(
         String middleName,
         String email,
         String mobilePhone,
-        LocalDateTime regDate,
-        LocalDateTime updDate
+        LocalDate birthDate,
+        Date regDate,
+        Date updDate
 ) {
 }

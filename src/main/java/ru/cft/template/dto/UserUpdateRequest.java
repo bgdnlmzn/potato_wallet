@@ -3,6 +3,8 @@ package ru.cft.template.dto;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
+import java.time.LocalDate;
+
 @Builder
 public record UserUpdateRequest(
 
@@ -13,6 +15,8 @@ public record UserUpdateRequest(
         String lastName,
 
         @Pattern(regexp = "^[А-Я][а-я]{1,50}$")
-        String middleName
+        String middleName,
+
+        LocalDate birthdate
 ) {
 }

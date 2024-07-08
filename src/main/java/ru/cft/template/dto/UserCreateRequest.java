@@ -17,6 +17,7 @@ public record UserCreateRequest(
         @NotNull
         @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!?])[A-Za-z\\d!?]{8,64}$")
         String password,
+
         @NotNull
         @Pattern(regexp = "^[А-Я][а-я]{1,50}$")
         String lastName,
