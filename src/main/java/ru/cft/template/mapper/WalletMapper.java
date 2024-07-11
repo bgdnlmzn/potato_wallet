@@ -10,9 +10,9 @@ import java.util.Optional;
 public class WalletMapper {
     public static WalletDto mapWallet(Optional<Wallet> wallet) {
         return new WalletDto(
-                wallet.getId(),
-                wallet.getAmount(),
-                wallet.getUpdatedAt()
+                wallet.get().getId(),
+                wallet.get().getAmount(),
+                wallet.get().getUpdatedAt()
         );
     }
 }
