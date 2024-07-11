@@ -34,7 +34,6 @@ public class SecurityConfig {
                         .requestMatchers("potato/wallet").authenticated()
                         .requestMatchers("potato/wallet/hesoyam").authenticated()
                         .requestMatchers("potato/users/sessions/now").authenticated()
-                        .requestMatchers("potato/users/sessions").authenticated()
                         .requestMatchers("potato/users/sessions/{id}").authenticated()
                         .requestMatchers("potato/transfer/wallet").authenticated()
                         .requestMatchers("potato/transfer/phone").authenticated()

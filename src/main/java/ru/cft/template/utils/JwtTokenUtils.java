@@ -54,7 +54,7 @@ public class JwtTokenUtils {
                 return ((User) userDetails).getId();
             }
         }
-        throw new IllegalStateException("Cannot extract user ID from Authentication object");
+        throw new IllegalStateException("Невозможно извлечь идентификатор пользователя из объекта аутентификации");
     }
     public Date getDateFromToken(String token) {
         return getClaimsFromToken(token).getExpiration();

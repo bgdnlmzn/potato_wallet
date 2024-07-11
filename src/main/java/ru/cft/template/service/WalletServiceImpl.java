@@ -36,8 +36,8 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public WalletDto getWallet(Authentication authentication) {
         UUID id = jwtTokenUtils.getUserIdFromAuthentication(authentication);
-        Optional<Wallet> wallet = walletRepository.findById(id);
-        return WalletMapper.mapWallet(wallet);
+        User user = userRepository.findById(id).orElseThrow(()-> new UsernameNotFoundException("Пользователь не найден"));
+        return WalletMapper.mapWallet(user.getWallet());
     }
 
     @Override

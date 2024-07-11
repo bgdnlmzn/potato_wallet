@@ -8,11 +8,11 @@ import java.util.Optional;
 
 @Component
 public class WalletMapper {
-    public static WalletDto mapWallet(Optional<Wallet> wallet) {
+    public static WalletDto mapWallet(Wallet wallet) {
         return new WalletDto(
-                wallet.get().getId(),
-                wallet.get().getAmount(),
-                wallet.get().getUpdatedAt()
+                wallet.getId(),
+                wallet.getAmount(),
+                wallet.getUpdatedAt()
         );
     }
 }
