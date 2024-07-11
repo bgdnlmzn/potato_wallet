@@ -72,11 +72,13 @@ public class InvoiceServiceImpl implements InvoiceService {
             throw new InsufficientFundsException("Недостаточно средств на кошельке плательщика.");
         }
 
-        User receiver = invoice.getReceiver();
+        User receiver = invoice.getSender();
         Wallet receiverWallet = receiver.getWallet();
 
         payerWallet.setAmount(payerWallet.getAmount() - invoice.getAmount());
         receiverWallet.setAmount(receiverWallet.getAmount() + invoice.getAmount());
+        payerWallet.setUpdatedAt(LocalDateTime.now());
+        receiverWallet.setUpdatedAt(LocalDateTime.now());
 
         invoice.setStatus(InvoiceStatus.PAID);
 

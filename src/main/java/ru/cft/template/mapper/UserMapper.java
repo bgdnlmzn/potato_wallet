@@ -37,7 +37,7 @@ public class UserMapper {
         return new UserDto(
                 user.getId().toString(),
                 user.getWallet().getId().toString(),
-                user.getLastName(),
+                user.getFirstName(),
                 user.getLastName(),
                 user.getMiddleName(),
                 user.getEmail(),
