@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name = "banned_tokens")
 public class BannedToken {
     @Id
-    @Column(name = "token", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "token")
     private String token;
 
 }

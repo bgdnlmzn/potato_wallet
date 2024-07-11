@@ -14,6 +14,7 @@ import ru.cft.template.repository.WalletRepository;
 import ru.cft.template.utils.JwtTokenUtils;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -35,8 +36,8 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public WalletDto getWallet(Authentication authentication) {
         UUID id = jwtTokenUtils.getUserIdFromAuthentication(authentication);
-        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
-        return WalletMapper.mapWallet(user.getWallet());
+        Optional<Wallet> wallet = walletRepository.findById(id);
+        return WalletMapper.mapWallet(wallet);
     }
 
     @Override

@@ -38,10 +38,10 @@ public class InvoiceServiceImpl implements InvoiceService {
         User sender = userServiceImpl.getUserByAuthentication(authentication);
 
         User receiver = userRepository.findByMobilePhone(body.mobilePhone())
-                .orElseThrow(() -> new UserNotFoundException("Receiver not found"));
+                .orElseThrow(() -> new UserNotFoundException("Получатель не найден."));
 
         if (sender.getId().equals(receiver.getId())) {
-            throw new SelfInvoiceException("You cannot create an invoice to yourself");
+            throw new SelfInvoiceException("Вы не можете выставить счет самому себе.");
         }
 
         Invoice outgoingInvoice = new Invoice();
@@ -62,14 +62,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         Wallet payerWallet = payer.getWallet();
 
         Invoice invoice = invoiceRepository.findById(invoiceId)
-                .orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
+                .orElseThrow(() -> new InvoiceNotFoundException("Счет не найден."));
 
         if (invoice.getStatus() == InvoiceStatus.PAID) {
-            throw new IllegalArgumentException("Invoice is already paid");
+            throw new IllegalArgumentException("Счет уже оплачен.");
         }
 
         if (payerWallet.getAmount() < invoice.getAmount()) {
-            throw new InsufficientFundsException("Insufficient funds in payer's wallet");
+            throw new InsufficientFundsException("Недостаточно средств на кошельке плательщика.");
         }
 
         User receiver = invoice.getReceiver();
@@ -103,10 +103,10 @@ public class InvoiceServiceImpl implements InvoiceService {
         User sender = userServiceImpl.getUserByAuthentication(authentication);
 
         Invoice invoice = invoiceRepository.findById(invoiceId)
-                .orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
+                .orElseThrow(() -> new InvoiceNotFoundException("Счет не найден."));
 
         if (!invoice.getSender().getId().equals(sender.getId())) {
-            throw new PermissionDeniedException("You do not have permission to cancel this invoice");
+            throw new PermissionDeniedException("У вас нет разрешения на отмену этого счета.");
         }
 
         invoice.setStatus(InvoiceStatus.CANCELED);
@@ -119,7 +119,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceDto getInvoiceInfo(UUID invoiceId) {
         Invoice invoice = invoiceRepository.findById(invoiceId)
-                .orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
+                .orElseThrow(() -> new InvoiceNotFoundException("Счет не найден."));
         return InvoiceMapper.toDto(invoice);
     }
 

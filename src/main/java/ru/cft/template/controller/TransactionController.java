@@ -1,5 +1,6 @@
 package ru.cft.template.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,11 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping("/transfer/phone")
-    public TransDto createTransactionViaPhone(Authentication authentication, @RequestBody TransferViaPhoneRequest body) {
+    public TransDto createTransactionViaPhone(Authentication authentication, @RequestBody @Valid TransferViaPhoneRequest body) {
         return transactionService.createTransactionPhone(authentication,body);
     }
     @PostMapping("/transfer/wallet")
-    public TransDto createTransactionViaWallet(Authentication authentication, @RequestBody TransferViaWalletRequest body) {
+    public TransDto createTransactionViaWallet(Authentication authentication, @RequestBody @Valid TransferViaWalletRequest body) {
         return transactionService.createTransactionWallet(authentication,body);
     }
     @GetMapping("/transfer/{type}")

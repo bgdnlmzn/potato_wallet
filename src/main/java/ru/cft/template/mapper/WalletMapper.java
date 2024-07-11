@@ -4,9 +4,11 @@ import org.springframework.stereotype.Component;
 import ru.cft.template.dto.WalletDto;
 import ru.cft.template.entity.Wallet;
 
+import java.util.Optional;
+
 @Component
 public class WalletMapper {
-    public static WalletDto mapWallet(Wallet wallet) {
+    public static WalletDto mapWallet(Optional<Wallet> wallet) {
         return new WalletDto(
                 wallet.getId(),
                 wallet.getAmount(),

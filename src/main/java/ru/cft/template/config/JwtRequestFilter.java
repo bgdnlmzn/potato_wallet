@@ -51,7 +51,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private boolean isTokenBanned(String jwt, HttpServletResponse response) throws IOException {
         if (bannedTokenRepository.findByToken(jwt).isPresent()) {
             log.info("Attempt to use a banned token");
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The token is banned");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Токен заблокирован");
             return true;
         }
         return false;
@@ -64,9 +64,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 authenticateUser(jwt, userId);
             }
         } catch (ExpiredJwtException e) {
-            log.debug("Token is expired :(");
+            log.debug("Токен просрочен");
         } catch (Exception e) {
-            log.error("Error processing JWT", e);
+            log.error("Ошибка обработки JWT", e);
         }
     }
 

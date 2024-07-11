@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserDetailsService {
             user.setMiddleName(body.middleName());
         if(body.birthdate() != null)
             user.setBirthDate(body.birthdate());
-        //user.setUpdatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
         return UserMapper.mapUserToResponse(user);
     }

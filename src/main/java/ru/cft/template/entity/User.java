@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -30,47 +31,33 @@ public class User implements UserDetails{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "last_name", nullable = false, length = 50)
+    @Column(name = "last_name")
     private String lastName;
 
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "first_name", nullable = false, length = 50)
+    @Column(name = "first_name")
     private String firstName;
 
-    @Size(max = 50)
-    @Column(name = "middle_name", length = 50)
+    @Column(name = "middle_name")
     private String middleName;
 
-    @Size(max = 11)
-    @NotNull
-    @Column(name = "mobile_phone", nullable = false, length = 11)
+    @Column(name = "mobile_phone")
     private String mobilePhone;
 
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @NotNull
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -79,7 +66,7 @@ public class User implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of() ;
     }
 
     @Override
@@ -89,7 +76,7 @@ public class User implements UserDetails{
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override

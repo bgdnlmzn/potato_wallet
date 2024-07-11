@@ -1,5 +1,6 @@
 package ru.cft.template.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @PostMapping("/users")
-    public TokenDto register(@RequestBody UserCreateRequest body) {
+    public TokenDto register(@RequestBody @Valid UserCreateRequest body) {
         return userService.createUser(body);
     }
 
@@ -28,14 +29,14 @@ public class UserController {
         return userService.getUserResponse(authentication);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("users/{userId}")
     public UserShortInfo findById(@PathVariable String userId) {
         UUID uid = UUID.fromString(userId);
         return userService.findUserShortInfo(uid);
     }
 
     @PatchMapping("/users")
-    public UserDto updateInfo(@RequestBody UserUpdateRequest body, Authentication authentication) {
+    public UserDto updateInfo(@RequestBody @Valid UserUpdateRequest body, Authentication authentication) {
         return userService.updateUser(body,authentication);
     }
 }

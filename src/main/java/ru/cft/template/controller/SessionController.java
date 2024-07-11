@@ -1,5 +1,6 @@
 package ru.cft.template.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class SessionController {
     private final SessionService sessionService;
 
     @PostMapping("/sessions")
-    public SessionDto createSession(@RequestBody LoginRequest body) {
+    public SessionDto createSession(@RequestBody @Valid LoginRequest body) {
         return sessionService.createSession(body);
     }
     @GetMapping("/sessions/now")

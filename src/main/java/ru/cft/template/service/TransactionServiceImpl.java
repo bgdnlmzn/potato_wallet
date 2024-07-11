@@ -44,7 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = checkSufficientFunds(senderWallet, receiverWallet, body.amount(), body.mobilePhone(), true);
 
         if (transaction.getStatus() == TransStatus.FAILED) {
-            throw new InsufficientFundsException("Insufficient funds in sender's wallet");
+            throw new InsufficientFundsException("Недостаточно средств на кошельке отправителя.");
         }
 
         updateWalletBalancesAndSaveTransaction(senderWallet, receiverWallet, body.amount(), transaction);
@@ -64,7 +64,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = checkSufficientFunds(senderWallet, receiverWallet, body.amount(), receiver.getMobilePhone(), false);
 
         if (transaction.getStatus() == TransStatus.FAILED) {
-            throw new InsufficientFundsException("Insufficient funds in sender's wallet");
+            throw new InsufficientFundsException("Недостаточно средств на кошельке отправителя.");
         }
 
         transaction.setReceiverPhone(Long.valueOf(receiver.getMobilePhone()));
@@ -95,17 +95,17 @@ public class TransactionServiceImpl implements TransactionService {
 
     private User findUserByMobilePhone(String mobilePhone) {
         return userRepository.findByMobilePhone(mobilePhone)
-                .orElseThrow(() -> new UserNotFoundException("Receiver not found"));
+                .orElseThrow(() -> new UserNotFoundException("Получатель не найден."));
     }
 
     private Wallet findWalletById(String walletId) {
         return walletRepository.findById(UUID.fromString(walletId))
-                .orElseThrow(() -> new WalletNotFoundException("Receiver wallet not found"));
+                .orElseThrow(() -> new WalletNotFoundException("Кошелек получателя не найден."));
     }
 
     private User findUserByWallet(Wallet wallet) {
         return userRepository.findByWallet(wallet)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
     }
 
     private Transaction checkSufficientFunds(Wallet senderWallet, Wallet receiverWallet, long amount, String receiverPhone, boolean isPhone) {

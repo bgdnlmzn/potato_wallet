@@ -1,7 +1,7 @@
 package ru.cft.template.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.cft.template.dto.CreateInvoiceRequest;
@@ -18,7 +18,7 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
 
     @PostMapping("/invoices")
-    public InvoiceDto createInvoice(Authentication authentication, @RequestBody CreateInvoiceRequest body) {
+    public InvoiceDto createInvoice(Authentication authentication, @RequestBody @Valid CreateInvoiceRequest body) {
         return invoiceService.createInvoice(authentication, body);
     }
 

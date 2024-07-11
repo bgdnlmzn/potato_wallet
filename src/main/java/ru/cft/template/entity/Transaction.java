@@ -17,27 +17,24 @@ import java.util.UUID;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private UUID id;
 
-    @NotNull
-    @Column(name = "amount", nullable = false)
+    @Column(name = "amount")
     private Long amount;
 
     @NotNull
-    @Column(name = "transaction_date", nullable = false)
+    @Column(name = "transaction_date")
     private LocalDateTime transactionDate = LocalDateTime.now();
 
-    @NotNull
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private TransType type;
 
     @Column(name = "receiver_phone")
     private Long receiverPhone;
 
-    @NotNull
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private TransStatus status;
 

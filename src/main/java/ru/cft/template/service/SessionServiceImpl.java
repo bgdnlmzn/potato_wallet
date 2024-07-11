@@ -41,10 +41,10 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public SessionDto createSession(LoginRequest body) {
         User user = userRepository.findByMobilePhone(body.mobilePhone())
-                .orElseThrow(() -> new UsernameNotFoundException("Invalid login details"));
+                .orElseThrow(() -> new UsernameNotFoundException("Неверные учетные данные."));
 
         if (!passwordEncoder.matches(body.password(), user.getPassword())) {
-            throw new UsernameNotFoundException("Invalid login details");
+            throw new UsernameNotFoundException("Неверные учетные данные.");
         }
 
         String token = jwtTokenUtils.generateToken(user);
@@ -65,7 +65,7 @@ public class SessionServiceImpl implements SessionService {
         String currentToken = (String) authentication.getCredentials();
 
         Session session = sessionRepository.findByToken(currentToken)
-                .orElseThrow(() -> new SessionNotFoundException("Сессия не найдена"));
+                .orElseThrow(() -> new SessionNotFoundException("Сессия не найдена."));
 
         Date now = new Date();
         boolean isTokenValid = jwtTokenUtils.getDateFromToken(currentToken).after(now);
@@ -90,7 +90,7 @@ public class SessionServiceImpl implements SessionService {
         UUID currentUserId = userService.getUserByAuthentication(authentication).getId();
         UUID sessionId = UUID.fromString(id);
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException("Сессия не найдена."));
 
         validateSessionOwner(session, currentUserId);
 
@@ -98,12 +98,12 @@ public class SessionServiceImpl implements SessionService {
 
         sessionRepository.deleteById(sessionId);
 
-        return SessionMapper.mapDeleteSession("Удалено");
+        return SessionMapper.mapDeleteSession("Удалено.");
     }
 
     private void validateSessionOwner(Session session, UUID currentUserId) {
         if (!session.getUser().getId().equals(currentUserId)) {
-            throw new AccessRightsException("You can only delete your own sessions");
+            throw new AccessRightsException("Вы можете удалять только свои сеансы.");
         }
     }
 

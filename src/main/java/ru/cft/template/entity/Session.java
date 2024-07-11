@@ -18,17 +18,14 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @NotNull
-    @Column(name = "token", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "token")
     private String token;
 
-    @NotNull
-    @Column(name = "expiration_time", nullable = false)
+    @Column(name = "expiration_time")
     private Date expirationTime;
 
 }

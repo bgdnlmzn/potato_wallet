@@ -17,22 +17,19 @@ import java.util.UUID;
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private UUID id;
 
-    @NotNull
-    @Column(name = "amount", nullable = false)
+    @Column(name = "amount")
     private Long amount;
 
     @Column(name = "comment")
     private String comment;
 
-    @NotNull
-    @Column(name = "issue_date", nullable = false)
+    @Column(name = "issue_date")
     private LocalDateTime issueDate = LocalDateTime.now();;
 
-    @NotNull
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
 

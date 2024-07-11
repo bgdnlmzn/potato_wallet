@@ -16,16 +16,14 @@ import java.util.UUID;
 public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private UUID id;
 
-    @NotNull
-    @Column(name = "amount", nullable = false)
+    @Column(name = "amount")
     private Long amount;
 
-    @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
 }
