@@ -11,37 +11,31 @@ import ru.cft.template.service.UserServiceImpl;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("potato/users")
+@RequestMapping("potato")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
 
     private final UserServiceImpl userService;
 
-    @PostMapping("/register")
+    @PostMapping("/users")
     public TokenDto register(@RequestBody UserCreateRequest body) {
-        log.info("pass");
         return userService.createUser(body);
     }
 
-    @GetMapping("/myprofile")
+    @GetMapping("/users")
     public UserDto getProfile(Authentication authentication) {
-        log.info("pass");
         return userService.getUserResponse(authentication);
     }
 
-    @GetMapping("/findbyid/{userId}")
+    @GetMapping("/{userId}")
     public UserShortInfo findById(@PathVariable String userId) {
-        log.info("pass");
         UUID uid = UUID.fromString(userId);
         return userService.findUserShortInfo(uid);
     }
 
-    @PatchMapping("/updateinfo")
+    @PatchMapping("/users")
     public UserDto updateInfo(@RequestBody UserUpdateRequest body, Authentication authentication) {
-        log.info("pass");
         return userService.updateUser(body,authentication);
     }
-
-
 }

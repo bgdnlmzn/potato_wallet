@@ -5,7 +5,6 @@ import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Builder
 public record UserDto(
@@ -17,7 +16,7 @@ public record UserDto(
         String email,
         String mobilePhone,
         LocalDate birthDate,
-        Date regDate,
-        Date updDate
+        LocalDateTime regDate,
+        LocalDateTime updDate
 ) {
 }

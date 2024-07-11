@@ -1,11 +1,11 @@
 package ru.cft.template.config;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,10 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.cft.template.entity.User;
+import ru.cft.template.repository.BannedTokenRepository;
 import ru.cft.template.repository.UserRepository;
 import ru.cft.template.utils.JwtTokenUtils;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.UUID;
 
 @Component
@@ -25,32 +27,56 @@ import java.util.UUID;
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenUtils jwtTokenUtils;
     private final UserRepository userRepository;
-
+    private final BannedTokenRepository bannedTokenRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            @NotNull HttpServletResponse response,
+            @NotNull FilterChain filterChain
+    ) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        String jwtToken = null;
-        UUID userId = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwtToken = authHeader.substring(7);
-            try {
-                userId = jwtTokenUtils.getUserId(jwtToken);
 
-            } catch (ExpiredJwtException e) {
-                log.debug("Время жизни токена вышло");
-            } catch (SignatureException e) {
-                log.debug("Неверная подпись");
-            }
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwt = authHeader.substring(7);
+
+            if (isTokenBanned(jwt, response)) return;
+
+            processTokenAuthentication(jwt);
         }
-        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepository.findById(userId).orElse(null);
-            if (user != null) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        }
+
         filterChain.doFilter(request, response);
     }
 
+    private boolean isTokenBanned(String jwt, HttpServletResponse response) throws IOException {
+        if (bannedTokenRepository.findByToken(jwt).isPresent()) {
+            log.info("Attempt to use a banned token");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The token is banned");
+            return true;
+        }
+        return false;
+    }
+
+    private void processTokenAuthentication(String jwt) {
+        try {
+            UUID userId = jwtTokenUtils.getUserId(jwt);
+            if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                authenticateUser(jwt, userId);
+            }
+        } catch (ExpiredJwtException e) {
+            log.debug("Token is expired :(");
+        } catch (Exception e) {
+            log.error("Error processing JWT", e);
+        }
+    }
+
+    private void authenticateUser(String jwt, UUID userId) {
+        userRepository.findById(userId).ifPresent(user -> {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                    user, jwt, Collections.emptyList()
+            );
+            SecurityContextHolder.getContext().setAuthentication(token);
+        });
+    }
 }
+

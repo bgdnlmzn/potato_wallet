@@ -1,5 +1,7 @@
 package ru.cft.template.mapper;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.cft.template.dto.UserCreateRequest;
 import ru.cft.template.dto.UserDto;
@@ -8,10 +10,12 @@ import ru.cft.template.entity.User;
 
 @Component
 public class UserMapper {
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public static User mapRegBody(UserCreateRequest body) {
         User user = new User();
         user.setMobilePhone(body.mobilePhone());
-        user.setPassword(body.password());
+        user.setPassword(passwordEncoder.encode(body.password()));
         user.setLastName(body.lastName());
         user.setFirstName(body.firstName());
         user.setMiddleName(body.middleName());

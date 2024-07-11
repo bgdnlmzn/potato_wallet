@@ -2,6 +2,7 @@ package ru.cft.template.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.cft.template.dto.ActiveSessionDto;
+import ru.cft.template.dto.DeleteSessionResponse;
 import ru.cft.template.dto.SessionDto;
 import ru.cft.template.entity.Session;
 
@@ -22,5 +23,8 @@ public class SessionMapper {
                 session.getToken(),
                 session.getExpirationTime()
         );
+    }
+    public static DeleteSessionResponse mapDeleteSession(String message){
+        return new DeleteSessionResponse(message);
     }
 }
